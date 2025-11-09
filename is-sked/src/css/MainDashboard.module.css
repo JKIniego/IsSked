@@ -1,0 +1,89 @@
+.mainBody {
+    background-color: rgb(243, 243, 243);
+}
+
+.wholeContent {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 70px 15px 20px 15px;
+    padding: 7px 16px 7px 16px;
+    border-radius: 20px;
+    background-color: white;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 70px - 20px);
+    overflow-y: auto;
+}
+
+.elements {
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.parent {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    margin: 0;
+}
+
+.child {
+    flex: 1;
+    display: flex;
+}
+
+.left {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+.addButton {
+    width: 100%;
+    background-color: white;
+    font-weight: bolder;
+    color: black;
+    height: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.addButton:hover {
+    background-color: #e6e6e6;
+}
+
+.addButton:active {
+    background-color: #9c9c9c;
+}
+
+.block {
+    display: block;
+    font-weight: lighter;
+    font-size: 20px;
+}
+
+.box {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.schedList {
+    border-radius: 20px;
+    background-color: white;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+}

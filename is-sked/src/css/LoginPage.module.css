@@ -1,0 +1,180 @@
+.loginBody {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to bottom, #7B1113, #014421);
+}
+
+.loginContainer {
+    background-color: white;
+    border-radius: 20px;
+    width: 65%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.heading {
+    font-size: 50px;
+    letter-spacing: 6px;
+}
+
+.modalHeading {
+    font-size: 30px;
+    letter-spacing: 6px;
+}
+
+.elements {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.labelText {
+    margin-bottom: 5px;
+    align-self: flex-start;
+}
+
+.inputField {
+    width: 100%;
+    border: 2px solid black;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    background-color: var(--secondary, #f0f0f0);
+    box-sizing: border-box;
+}
+
+.parent {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    margin: 0;
+}
+
+.child {
+    flex: 1;
+    display: flex;
+}
+
+.left {
+    justify-content: flex-start;
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+.row {
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.primaryButton {
+    width: 100%;
+    background-color: #014421;
+    font-weight: bolder;
+    color: white;
+    height: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.primaryButton:hover {
+    background-color: #03803f;
+}
+
+.primaryButton:active {
+    background-color: #012412;
+}
+
+.closeBtn {
+    width: 100%;
+    background-color: #7B1113;
+    font-weight: bolder;
+    color: white;
+    height: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.closeBtn:hover {
+    background-color: #c71c1f;
+}
+
+.closeBtn:active {
+    background-color: #3b0909;
+}
+
+.linkText {
+    color: black;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.linkText:hover {
+    color: #7B1113;
+}
+
+.linkText:active {
+    color: #014421;
+}
+
+.modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modalBox {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modalInput {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid black;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    gap: 5px;
+    width: 70%;
+    height: 50px;
+}
