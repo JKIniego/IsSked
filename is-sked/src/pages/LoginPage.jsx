@@ -45,6 +45,7 @@ export default function LoginPage() {
     let user = null;
 
     try {
+      // Checks if user email and password matches or if it does not exist in Supabase
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({email, password});
 
       if (authError) throw authError;
@@ -135,6 +136,7 @@ export default function LoginPage() {
       },
     });
 
+    // Checks for sign up issues
     if (error) {
       alert("Signup failed: " + error.message);
       return;
