@@ -10,11 +10,12 @@ This README provides an overview of the repository layout to help contributors n
 is-sked/
 ├── public/                 # Static assets served by Vite
 └── src/
-    ├── assets/             # Images, icons, logo files
+    ├── assets/             # Images, icons, illustrations
     ├── components/         # Reusable React components
     ├── css/                # CSS modules and global styles
-    ├── lib/                # Supabase client & utility functions
-    └── pages/              # Main application pages/routes
+    ├── lib/                # Supabase client and utilities
+    └── pages/              # Page-level route components
+
 
 ### Notes
 - **main.jsx** is the root for the entire web application.
