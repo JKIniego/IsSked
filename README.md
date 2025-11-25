@@ -6,5 +6,5 @@ A web-based class schedule maker that prompts the user to manually input their c
 
 This README provides an overview of the repository layout to help contributors navigate quickly.
 
-## Directory Tree
+### Directory Tree
 ex
