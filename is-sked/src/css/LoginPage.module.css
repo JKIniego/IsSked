@@ -147,6 +147,7 @@
     align-items: center;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
 }
 
 .modalBox {
@@ -177,4 +178,10 @@
     gap: 5px;
     width: 70%;
     height: 50px;
+}
+
+.userAndPass {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
 }

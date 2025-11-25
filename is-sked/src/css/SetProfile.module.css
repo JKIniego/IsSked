@@ -1,0 +1,64 @@
+.profileBody {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to bottom, #7B1113, #014421);
+}
+
+.profileContainer {
+    background-color: white;
+    border-radius: 20px;
+    width: 65%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.heading {
+    font-size: 50px;
+    letter-spacing: 6px;
+}
+
+.elements {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.labelText {
+    margin-bottom: 5px;
+    align-self: flex-start;
+}
+
+.inputField {
+    width: 100%;
+    border: 2px solid black;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    background-color: var(--secondary, #f0f0f0);
+    box-sizing: border-box;
+}
+
+.primaryButton {
+    width: 100%;
+    background-color: #014421;
+    font-weight: bolder;
+    color: white;
+    height: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    height: 60px;
+}

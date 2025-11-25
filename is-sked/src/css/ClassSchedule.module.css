@@ -1,0 +1,238 @@
+.mainBody {
+    background-color: rgb(243, 243, 243);
+}
+
+.wholeContent {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex: 1;
+    margin: 70px 15px 20px 15px;
+    padding: 7px 16px 7px 16px;
+    border-radius: 20px;
+    background-color: #fff;
+    height: calc(100vh - 70px - 40px);
+    overflow-y: auto;
+}
+
+.leftColumn {
+    flex: 0.25;
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+}
+
+.buttonDiv {
+    flex: 0.1;
+}
+
+.addButton {
+    width: 100%;
+    background-color: #014421;
+    font-weight: bolder;
+    color: white;
+    height: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.addButton:hover {
+    background-color: #03803f;
+}
+
+.addButton:active {
+    background-color: #012412;
+}
+
+.coursesDiv {
+    flex: 0.9;
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.coursesDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.coursesTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+}
+
+.coursesLine {
+    border: none;
+    border-top: 2px solid #ccc;
+    width: 100%;
+}
+
+.courseList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.courseItem {
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+}
+
+.courseItem:hover {
+    transform: translateX(4px);
+}
+
+.rightColumn {
+    flex: 0.75;
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+}
+
+.tableContainer {
+    flex: 0.9;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.scheduleTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* ensures columns have fixed width */
+}
+
+.scheduleTable th {
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.scheduleTable td {
+    position: relative;
+    font-size: 12px;
+    text-align: center;
+    height: 40px;
+    padding: 0;
+    border: none;
+}
+
+.scheduleTable th:first-child, .scheduleTable td:first-child {
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: left;
+    font-weight: bold;
+    width: 80px;
+}
+
+.timeCell {
+    width: 80px;
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    border-right: 1px solid #ccc;
+    background-color: #fff;
+    position: relative;
+}
+
+.scheduleTable td:not(.timeCell) {
+    border-top: 1px solid #ccc;
+    position: relative;
+}
+
+.timeCell::after {
+    content: attr(data-time);
+    position: absolute;
+    top: -7px;
+    right: 10px;
+    font-size: 12px;
+    color: #555;
+}
+
+.classCell {
+    background-color: inherit;
+    color: white;
+    font-weight: bold;
+    z-index: 1;
+    position: relative;
+}
+
+.buttonsContainer {
+    flex: 0.1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
+}
+
+.actionButton {
+    width: 100%;
+    background-color: white;
+    font-weight: bolder;
+    color: black;
+    height: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    height: 100%;
+}
+
+.actionButton:hover {
+    background-color: #e6e6e6;
+}
+
+.actionButton:active {
+    background-color: #9c9c9c;
+}
+
+.backButton {
+    background-color: #7B1113;
+    color: white;
+    width: 70%;
+}
+
+.backButton:hover {
+    background-color: #c71c1f;
+}
+
+.backButton:active {
+    background-color: #3b0909;
+}
