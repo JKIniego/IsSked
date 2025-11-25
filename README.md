@@ -7,14 +7,14 @@ A web-based class schedule maker that prompts the user to manually input their c
 This README provides an overview of the repository layout to help contributors navigate quickly.
 
 ### Directory Tree
-is-sked/
-|-- public/                 # Static assets served by Vite
-|-- src/
-    |-- assets/             # Images, icons, illustrations
-    |-- components/         # Reusable React components
-    |-- css/                # CSS modules and global styles
-    |-- lib/                # Supabase client and utilities
-    |-- pages/              # Page-level route components
+- **is-sked/**
+  - **public/** — Static assets served by Vite
+  - **src/**
+    - **assets/** — Images, icons, illustrations
+    - **components/** — Reusable React components
+    - **css/** — CSS modules & global styles
+    - **lib/** — Supabase client & utility functions
+    - **pages/** — Application pages/routes
 
 ### Notes
 - **main.jsx** is the root for the entire web application.
