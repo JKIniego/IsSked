@@ -38,19 +38,21 @@ This README provides an overview of the repository layout to help contributors n
 
 ## Installation
 
-Make sure you have [Node.js](https://nodejs.org/) installed.
+**Step 0:** Make sure you have [Node.js](https://nodejs.org/) installed.
 
-Install dependencies:
+**Step 1:** Go to is-sked/ folder.
+
+**Step 2:** Install dependencies:
 ```bash
 npm install
 ```
 
-Start the development server:
+**Step 3:** Start the development server:
 ```bash
 npm run dev
 ```
 
-After running, open your browser and go to:
+**Step 4:** After running, open your browser and go to:
 ```bash
 http://localhost:5173/
 ```
