@@ -2,6 +2,10 @@
 
 A web-based class schedule maker that prompts the user to manually input their courses in a semester, which will be displayed as a table. It also integrates a task/assignment list for each course.
 
+## Deployment
+
+This project is deployed on https://is-sked.vercel.app/
+
 ## Project Repository Structure
 
 This README provides an overview of the repository layout to help contributors navigate quickly.
@@ -31,3 +35,11 @@ This README provides an overview of the repository layout to help contributors n
     - **App.jsx** - Page router
     - **index.css** - Global CSS
     - **main.jsx** - Root file
+
+## Installation
+
+Make sure you have [Node.js](https://nodejs.org/) installed.
+
+Install dependencies:
+```bash
+npm install
