@@ -8,15 +8,26 @@ This README provides an overview of the repository layout to help contributors n
 
 ### Directory Tree
 - **is-sked/**
-  - **public/** — Static assets served by Vite
+  - **.vercel/** - Linking directory to Vercel
+  - **dist/** - Root file for Vercel
+  - **node_modules/** - npm dependencies
+  - **public/** - Static assets served by Vite
   - **src/**
-    - **assets/** — Images, icons, illustrations
-    - **components/** — Reusable React components
-    - **css/** — CSS modules & global styles
-    - **lib/** — Supabase client & utility functions
-    - **pages/** — Application pages/routes
-
-### Notes
-- **main.jsx** is the root for the entire web application.
-- **App.jsx** contains routes for web pages in src/pages.
-- **index.css** contains the font used for the entire web application.
+    - **assets/** - Images, icons, illustrations
+    - **components/** - Reusable React components
+      - **NavigationBar.jsx** - Navigation bar component
+    - **css/** - CSS modules & global styles
+    - **lib/** - Supabase client & utility functions
+    - **pages/** - Application pages/routes
+      - **AccountProfile.jsx** - Page for profile module
+      - **AuthCallback.jsx** - Page for email confirmation
+      - **ClassSchedule.jsx** - Page for course module
+      - **LoginPage.jsx** - Root page for login to website
+      - **MainDashboard.jsx** - Page after logging in and for class schedule module
+      - **Notifications.jsx (WIP)** - Page for notification module
+      - **ResetPassword.jsx (WIP)** - Page for reset password
+      - **SetProfile.jsx** - Page for profile set up after email confirmation
+      - **TaskDashboard.jsx** - Page for task module
+    - **App.jsx** - Page router
+    - **index.css** - Global CSS
+    - **main.jsx** - Root file
