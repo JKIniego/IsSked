@@ -43,3 +43,19 @@ Make sure you have [Node.js](https://nodejs.org/) installed.
 Install dependencies:
 ```bash
 npm install
+```
+
+Start the development server:
+```bash
+npm run dev
+```
+
+After running, open your browser and go to:
+```bash
+http://localhost:5173/
+```
+
+## Technologies
+- React
+- Vite
+- Supabase
