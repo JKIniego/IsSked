@@ -131,7 +131,7 @@
 .scheduleTable {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* ensures columns have fixed width */
+    table-layout: fixed;
 }
 
 .scheduleTable th {
@@ -147,7 +147,7 @@
     position: relative;
     font-size: 12px;
     text-align: center;
-    height: 40px;
+    height: 25px;
     padding: 0;
     border: none;
 }
@@ -191,6 +191,7 @@
     font-weight: bold;
     z-index: 1;
     position: relative;
+    cursor: pointer;
 }
 
 .buttonsContainer {
@@ -235,4 +236,157 @@
 
 .backButton:active {
     background-color: #3b0909;
+}
+
+.elements {
+    padding: 0 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.centerDiv {
+    align-items: center;
+}
+
+.modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.modalBox {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1001;
+}
+
+.modalBoxConfirm {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    width: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1002;
+}
+
+.modalInput {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid black;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    gap: 5px;
+    width: 70%;
+    height: 50px;
+}
+
+.primaryButton {
+    width: 100%;
+    background-color: #014421;
+    font-weight: bolder;
+    color: white;
+    height: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.primaryButton:hover {
+    background-color: #03803f;
+}
+
+.primaryButton:active {
+    background-color: #012412;
+}
+
+.closeBtn {
+    width: 100%;
+    background-color: #7B1113;
+    font-weight: bolder;
+    color: white;
+    height: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.closeBtn:hover {
+    background-color: #c71c1f;
+}
+
+.closeBtn:active {
+    background-color: #3b0909;
+}
+
+.firstCol {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.courseIdDiv {
+    flex: 0.5;
+}
+
+.sectionDiv {
+    flex: 0.25;
+}
+
+.lecOrLabDiv {
+    flex: 0.25;
+}
+
+.checkboxGroup {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 17px;
+}
+
+.timeDiv {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  align-content: center;
+}
+
+.timeInput {
+  display: flex;
+  flex-direction: column;
 }

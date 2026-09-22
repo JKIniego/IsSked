@@ -30,7 +30,7 @@ export default function SetProfile() {
     const { data, error } = await supabase
       .from("degree_program")
       .select("degree_program_id, name")
-      .neq("degree_program_id", "UPTac-0000");
+      .neq("degree_program_id", "UPTac0000");
 
     if (error) {
       console.error("Error fetching programs:", error);

@@ -12,8 +12,8 @@ export default function AuthCallback() {
       const { data: { session } } = await supabase.auth.getSession();
 
       // Checks if user hasn't confirmed their email in Supabase
-      if (!session) {
-        navigate("/login");
+      if(!session) {
+        navigate("/");
         return;
       }
 
@@ -24,19 +24,31 @@ export default function AuthCallback() {
         .eq("user_id", session.user.id)
         .single();
 
-      // Checks if user account is newly created: send them straight to the dashboard
-      if (!profile) {
-        localStorage.setItem("student_id", session.user.user_metadata?.student_id ?? "");
-        localStorage.setItem("email", session.user.email);
-        localStorage.setItem("display_name", session.user.user_metadata?.display_name ?? "");
-        localStorage.setItem("degree_program_id", "");
+      // Checks if user account is newly created: for profile setup purposes
+      if(!profile) {
+        const accessToken = authData.session?.access_token;
+        if(accessToken) {
+          localStorage.setItem("authToken", accessToken);
+        }
 
-        navigate("/main_dashboard");
+        navigate("/set_profile");
+      } else if(!profile.degree_program_id) {
+        const accessToken = authData.session?.access_token;
+        if(accessToken) {
+          localStorage.setItem("authToken", accessToken);
+        }
+        
+        navigate("/set_profile");
       } else {
         localStorage.setItem("student_id", profile.student_id);
         localStorage.setItem("email", session.user.email);
         localStorage.setItem("display_name", profile.display_name ?? "");
-        localStorage.setItem("degree_program_id", profile.degree_program_id ?? "");
+        localStorage.setItem("degree_program_id", profile.degree_program_id);
+
+        const accessToken = authData.session?.access_token;
+        if(accessToken) {
+          localStorage.setItem("authToken", accessToken);
+        }
 
         navigate("/main_dashboard");
       }

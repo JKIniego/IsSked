@@ -4,5 +4,5 @@ import { supabase } from "../lib/supabaseClient";
 import NavBar from "../components/NavigationBar";
 
 export default function ResetPassword() {
-    
+  
 }

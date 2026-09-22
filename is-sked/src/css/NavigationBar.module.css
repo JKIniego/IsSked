@@ -43,7 +43,7 @@
     right: 0;
     top: 100%;
     background-color: white;
-    min-width: 120px;
+    min-width: 200px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     margin-top: 4px;
@@ -63,4 +63,24 @@
 
 .dropdownItem:hover {
     background-color: #f0f0f0;
+}
+
+.profileImage {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+}
+
+.profileWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.usernameText {
+    word-wrap: break-word;
+    color: black;
+    font-weight: bold;
 }

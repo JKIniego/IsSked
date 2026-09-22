@@ -22,6 +22,11 @@ export default function LoginPage() {
 
   // ---------------- EFFECTS ----------------
   useEffect(() => {
+    // Checks if there has been a session that hasn't been logged out before
+    // Checks if user opens in a new tab after login successfully
+    if(localStorage.getItem("authToken")) {
+      navigate("/main_dashboard", { replace: true });
+    }
     document.title = "Log In | IsSked";
     document.body.classList.add(styles.loginBody);
     return () => {
@@ -36,8 +41,15 @@ export default function LoginPage() {
     const password = document.getElementById("password").value;
 
     // Checks if user did not enter email, password, or both
-    if (!email || !password) {
+    if(!email || !password) {
       alert("Please enter both email and password.");
+      return;
+    }
+
+    // Checks for valid email input
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(email)) {
+      alert("Please enter a valid email address.");
       return;
     }
 
@@ -46,14 +58,14 @@ export default function LoginPage() {
 
     try {
       // Checks if user email and password matches or if it does not exist in Supabase
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({email, password});
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({ email, password });
 
-      if (authError) throw authError;
+      if(authError) throw authError;
 
       user = authData.user;
 
       // Checks if the user is not found in the database
-      if (!user) {
+      if(!user) {
         alert("Login failed: user not found.");
         return;
       }
@@ -66,7 +78,7 @@ export default function LoginPage() {
         .single();
 
       // Checks if the user does not have a profile created
-      if (profileError || !studentProfile) {
+      if(profileError || !studentProfile) {
         alert("You cannot log in: no student profile found.");
         return;
       }
@@ -78,6 +90,11 @@ export default function LoginPage() {
       localStorage.setItem("display_name", studentProfile.display_name ?? "");
       localStorage.setItem("degree_program_id", studentProfile.degree_program_id ?? "");
 
+      const accessToken = authData.session?.access_token;
+      if(accessToken) {
+        localStorage.setItem("authToken", accessToken);
+      }
+
       // Audits login from user
       await supabase.from("login_audit").insert([{
         audit_id: crypto.randomUUID(),
@@ -86,17 +103,19 @@ export default function LoginPage() {
       }]);
 
       navigate("/main_dashboard", { replace: true });
-    } catch (error) {
-      console.error("Login failed:", error.message);
+    } catch(error) {
       alert("Login failed: " + error.message);
     }
   };
 
   // ---------------- FORGOT PASSWORD ----------------
   // Shows modal for reset password
-  function forgotPassword() {
-    setShowModalForgotPassword(true);
-    setResetEmail("");
+  async function forgotPassword() {
+    alert("Forgot Password: Work-in-Progress (WIP)");
+    return;
+
+    // setShowModalForgotPassword(true);
+    // setResetEmail("");
   };
 
   // Handles reset password for user
@@ -106,7 +125,7 @@ export default function LoginPage() {
 
   // ---------------- CREATE ACCOUNT ----------------
   // Shows modal for creating account
-  function createNewAccount() {
+  async function createNewAccount() {
     setShowModalCreateAccount(true);
     setSignupUsername("");
     setSignupEmail("");
@@ -118,75 +137,74 @@ export default function LoginPage() {
   // Note: There is no code or function yet for handling invalid inputs
   async function handleSignup() {
     // Checks if all fields are filled in
-    if (!signupEmail || !signupPassword || !signupUsername) {
+    if(!signupEmail || !signupPassword || !signupUsername) {
       alert("Please fill in all fields.");
       return;
     }
 
-    // Registers user info into Supabase
-    const { data, error } = await supabase.auth.signUp({
-      email: signupEmail,
-      password: signupPassword,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-        data: {
-          display_name: signupUsername,
-          student_id: signupStudentID,
-        },
-      },
-    });
-
-    // Checks for sign up issues
-    if (error) {
-      alert("Signup failed: " + error.message);
+    // Checks for valid username
+    if(signupUsername.length > 100) {
+      alert("Username must not exceed 100 characters.");
       return;
     }
 
-    const user = data?.user ?? null;
-    if (!user) {
-      alert("Unexpected signup issue");
+    const usernameRegex = /^[A-Za-z0-9 ]*$/;
+    if(!usernameRegex.test(signupUsername)) {
+      alert("Username must only include letters, numbers, and spaces.");
       return;
     }
 
-    let activeSession = data.session;
-    if (!activeSession) {
-      const { data: signedInData, error: signInError } = await supabase.auth.signInWithPassword({
+    // Checks for valid student ID
+    const studentIDRegex = /^\d{4}-\d{5}$/;
+    if(!studentIDRegex.test(signupStudentID)) {
+      alert("Student ID must be in the format XXXX-XXXXX, digits only.");
+      return;
+    }
+
+    // Checks for valid email input
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(signupEmail)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    // Checks for valid password input
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
+    if(!passwordRegex.test(signupPassword)) {
+      alert("Password must be at least 8 characters long and contain at least one number and one letter.");
+      return;
+    }
+
+    try {
+      // Registers user info into Supabase
+      const { data, error } = await supabase.auth.signUp({
         email: signupEmail,
         password: signupPassword,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          data: {
+            display_name: signupUsername,
+            student_id: signupStudentID,
+          },
+        },
       });
 
-      if (signInError) {
-        console.error("Auto-login after signup failed:", signInError.message);
-        alert("Account created! Please check your email to confirm it before signing in.");
-        setShowModalCreateAccount(false);
+      if(error) {
+        alert("Sign up failed: " + error.message);
         return;
       }
 
-      activeSession = signedInData.session;
-    }
-
-    if (activeSession) {
-      const { data: studentProfile, error: profileError } = await supabase
-        .from("student")
-        .select("student_id, display_name, degree_program_id")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-      if (!profileError && studentProfile) {
-        localStorage.setItem("student_id", studentProfile.student_id);
-        localStorage.setItem("email", user.email);
-        localStorage.setItem("display_name", studentProfile.display_name ?? "");
-        localStorage.setItem("degree_program_id", studentProfile.degree_program_id ?? "");
+      if(!data.user) {
+        alert("Email or Student ID already exists!");
+        return;
       }
 
+      // Alerts when new account is successfully created
+      alert("Account created! Check your email for verification. If you already signed up, check your inbox.");
       setShowModalCreateAccount(false);
-      navigate("/main_dashboard", { replace: true });
-      return;
+    } catch(err) {
+      alert("Signup failed: " + err.message);
     }
-
-    // Alerts when new account is successfully created
-    alert("Account created! Check your email for verification.");
-    setShowModalCreateAccount(false);
   };
 
   // ---------------- UI COMPONENT ----------------
@@ -197,12 +215,12 @@ export default function LoginPage() {
 
         <div className={styles.elements}>
           <label className={styles.labelText}>Email</label>
-          <input type="email" id="email" placeholder="your@email.com" className={styles.inputField}/>
+          <input type="email" id="email" placeholder="your@email.com" className={styles.inputField} />
         </div>
 
         <div className={styles.elements}>
           <label className={styles.labelText}>Password</label>
-          <input type="password" id="password" placeholder="••••••••" className={styles.inputField}/>
+          <input type="password" id="password" placeholder="••••••••" className={styles.inputField} />
         </div>
 
         <div className={styles.elements}>
@@ -236,7 +254,7 @@ export default function LoginPage() {
 
             <div className={styles.elements}>
               <label className={styles.labelText}>Username</label>
-              <input type="email" placeholder="your@email.com" className={styles.modalInput} value={resetEmail} onChange={(e) => setResetEmail(e.target.value)}/>
+              <input type="email" placeholder="your@email.com" className={styles.modalInput} value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} />
             </div>
 
             <div className={styles.modalButtons}>
@@ -259,23 +277,23 @@ export default function LoginPage() {
 
             <div className={`${styles.elements} ${styles.userAndPass}`}>
               <div>
-                <label className={styles.labelText}>Username</label>
-                <input type="text" placeholder="Juan dela Cruz" className={styles.modalInput} value={signupUsername} onChange={(e) => setSignupUsername(e.target.value)}/>
+                <label className={styles.labelText}>Display Name*</label>
+                <input type="text" placeholder="Juan dela Cruz" className={styles.modalInput} value={signupUsername} onChange={(e) => setSignupUsername(e.target.value)} />
               </div>
               <div>
-                <label className={styles.labelText}>Student ID</label>
-                <input type="text" placeholder="XXXX-XXXXX" className={styles.modalInput} value={signupStudentID} onChange={(e) => setSignupStudentID(e.target.value)}/>
+                <label className={styles.labelText}>Student ID*</label>
+                <input type="text" placeholder="XXXX-XXXXX" className={styles.modalInput} value={signupStudentID} onChange={(e) => setSignupStudentID(e.target.value)} />
               </div>
             </div>
 
             <div className={styles.elements}>
-              <label className={styles.labelText}>Email</label>
-              <input type="email" placeholder="your@email.com" className={styles.modalInput} value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)}/>
+              <label className={styles.labelText}>Email*</label>
+              <input type="email" placeholder="your@email.com" className={styles.modalInput} value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} />
             </div>
 
             <div className={styles.elements}>
-              <label className={styles.labelText}>Password</label>
-              <input type="password" placeholder="••••••••" className={styles.modalInput} value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)}/>
+              <label className={styles.labelText}>Password*</label>
+              <input type="password" placeholder="••••••••" className={styles.modalInput} value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} />
             </div>
 
             <div className={styles.modalButtons}>

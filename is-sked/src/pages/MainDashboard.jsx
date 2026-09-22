@@ -40,7 +40,7 @@ export default function MainDashboard() {
 
     // Gets user logged in
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if(!user) return;
 
     // Fetching student ID
     const { data: studentData } = await supabase
@@ -48,7 +48,7 @@ export default function MainDashboard() {
       .select("student_id")
       .eq("user_id", user.id)
       .single();
-    if (!studentData) return;
+    if(!studentData) return;
 
     const studentId = studentData.student_id;
 
@@ -71,45 +71,67 @@ export default function MainDashboard() {
   // Handles class schedule creation
   // Note: There is no code or function yet for handling invalid inputs
   async function handleCreateSchedule() {
-    // Checks for blank input
-    if (!scheduleName.trim()) return alert("Schedule name is required.");
+    // Checks for blank inputs
+    if(!scheduleName.trim()) return alert("Schedule name is required.");
 
-    // Gets user logged in
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    // Get logged-in user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if(userError || !user) return alert("User not found.");
 
-    // Fetching student ID
-    const { data: studentData } = await supabase
+    // Get student ID
+    const { data: studentData, error: studentError } = await supabase
       .from("student")
       .select("student_id")
       .eq("user_id", user.id)
       .single();
+    if(studentError || !studentData) return alert("Student profile not found.");
     const studentId = studentData.student_id;
 
-    // Insert new class schedule to Supabase
-    const { error } = await supabase
-      .from("schedule")
-      .insert([
-        {
-          student_id: studentId,
-          name: scheduleName,
-          is_active: false,
-        },
-      ]);
-    if (error) {
-      console.error(error);
-      return alert("Failed to create schedule");
-    }
+    try {
+      // Deactivate existing active schedule (if any)
+      await supabase
+        .from("schedule")
+        .update({ is_active: false })
+        .eq("student_id", studentId)
+        .eq("is_active", true);
 
-    // Refresh UI and modules
-    setShowModalCreateSched(false);
-    setScheduleName("");
-    fetchSchedules();
+      // Create new schedule as active
+      const { data: newSchedule, error } = await supabase
+        .from("schedule")
+        .insert([
+          {
+            student_id: studentId,
+            name: scheduleName,
+            is_active: true,
+          },
+        ])
+        .select()
+        .single(); // returns the inserted row
+
+      if(error) {
+        if (error.message.includes("duplicate key")) {
+          // Alerts that class schedule already exists
+          alert("Class schedule already exists!");
+        } else {
+          alert("Failed to create schedule: " + error.message);
+        }
+        return;
+      }
+
+      // Update UI & navigate
+      setShowModalCreateSched(false);
+      setScheduleName("");
+      fetchSchedules();
+
+      navigate(`/class_schedule/${newSchedule.schedule_id}`);
+    } catch(err) {
+      alert("Failed to create schedule: " + err.message);
+    }
   }
 
   // ---------------- EDIT CLASS SCHEDULE ----------------
   // Shows modal for edit class schedule
-  function openEditModal(sched) {
+  async function openEditModal(sched) {
     setSelectedSchedule(sched);
     setEditScheduleName(sched.name);
     setShowModalEditSched(true);
@@ -119,87 +141,107 @@ export default function MainDashboard() {
   // Note: There is no code or function yet for handling invalid inputs
   async function handleEditSchedule() {
     // Checks for blank input
-    if (!editScheduleName.trim()) return alert("Schedule name cannot be empty.");
+    if(!editScheduleName.trim()) return alert("Schedule name cannot be empty.");
 
-    // Updates class schedule name to Supabase
-    const { error } = await supabase
-      .from("schedule")
-      .update({ name: editScheduleName.trim() })
-      .eq("schedule_id", selectedSchedule.schedule_id);
+    try {
+      // Updates class schedule name in Supabase
+      const { error } = await supabase
+        .from("schedule")
+        .update({ name: editScheduleName.trim() })
+        .eq("schedule_id", selectedSchedule.schedule_id);
 
-    if (error) {
-      console.error(error);
-      alert("Failed to update schedule");
-      return;
+      if(error) {
+        if (error.message.includes("duplicate key")) {
+          // Alerts that class schedule already exists
+          alert("Class schedule already exists!");
+        } else {
+          alert("Failed to update schedule: " + error.message);
+        }
+        return;
+      }
+
+      // Refresh UI and modules
+      setShowModalEditSched(false);
+      setSelectedSchedule(null);
+      setEditScheduleName("");
+      fetchSchedules();
+
+    } catch(err) {
+      alert("Failed to update schedule: " + err.message);
     }
-
-    // Refresh UI and modules
-    setShowModalEditSched(false);
-    setSelectedSchedule(null);
-    setEditScheduleName("");
-    fetchSchedules();
   }
 
   // ---------------- DELETE CLASS SCHEDULE ----------------
   // Shows modal for delete class schedule
-  function openDeleteModal(sched) {
+  async function openDeleteModal(sched) {
     setSelectedSchedule(sched);
     setShowModalDeleteSched(true);
   }
 
   // Handles class schedule deletion
   async function handleDeleteSchedule() {
-    // Delete class schedule record from Supabase
-    const { error } = await supabase
-      .from("schedule")
-      .delete()
-      .eq("schedule_id", selectedSchedule.schedule_id);
+    try {
+      // Delete class schedule record from Supabase
+      const { error } = await supabase
+        .from("schedule")
+        .delete()
+        .eq("schedule_id", selectedSchedule.schedule_id);
 
-    if (error) {
-      console.error(error);
-      alert("Failed to delete schedule");
-      return;
+      if(error) {
+        alert("Failed to delete schedule: " + error.message);
+        return;
+      }
+
+      // Refresh UI and modules
+      setShowModalDeleteSched(false);
+      setSelectedSchedule(null);
+      fetchSchedules();
+    } catch(err) {
+      alert("Failed to delete schedule: " + err.message);
     }
-
-    // Refresh UI and modules
-    setShowModalDeleteSched(false);
-    setSelectedSchedule(null);
-    fetchSchedules();
   }
 
   // ---------------- SET ACTIVE CLASS SCHEDULE ----------------
   // Handles setting a class schedule as active
   async function handleSetActive(scheduleId) {
-    // Gets user logged in
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    try {
+      // Gets user logged in
+      const { data: { user } } = await supabase.auth.getUser();
+      if(!user) return;
 
-    // Fetching student ID
-    const { data: studentData } = await supabase
-      .from("student")
-      .select("student_id")
-      .eq("user_id", user.id)
-      .single();
-    const studentId = studentData.student_id;
+      // Fetching student ID
+      const { data: studentData } = await supabase
+        .from("student")
+        .select("student_id")
+        .eq("user_id", user.id)
+        .single();
+      
+      const studentId = studentData.student_id;
 
-    // Deactivating all class schedules for this student
-    await supabase.from("schedule").update({ is_active: false }).eq("student_id", studentId);
+      // Deactivating all class schedules for this student
+      await supabase.from("schedule").update({ is_active: false }).eq("student_id", studentId);
 
-    // Activating the selected class schedule
-    const { error } = await supabase.from("schedule").update({ is_active: true }).eq("schedule_id", scheduleId);
-    if (error) {
-      console.error(error);
-      alert("Failed to set schedule as active");
-      return;
+      // Activating the selected class schedule
+      const { error } = await supabase
+        .from("schedule")
+        .update({ is_active: true })
+        .eq("schedule_id", scheduleId);
+      
+        if(error) {
+          alert("Failed to set schedule as active");
+          return;
+        }
+
+      // Refresh modules
+      fetchSchedules();
+    } catch(err) {
+      alert("Failed to set schedule as active: " + err.message);
     }
-
-    // Refresh modules
-    fetchSchedules();
   }
 
   // ---------------- GO TO CLASS SCHEDULE LAYOUT ----------------
   // Handles navigation to class schedule layout
-  function handleGoToLayout(scheduleId) {
+  async function handleGoToLayout(scheduleId) {
     navigate(`/class_schedule/${scheduleId}`);
   }
 
@@ -220,10 +262,7 @@ export default function MainDashboard() {
             </div>
             <div className={`${styles.child} ${styles.center}`}></div>
             <div className={`${styles.child} ${styles.right}`}>
-              <button
-                className={styles.addButton}
-                onClick={() => setShowModalCreateSched(true)}
-              >
+              <button className={styles.addButton} onClick={() => setShowModalCreateSched(true)}>
                 Create New Schedule
               </button>
             </div>
@@ -246,7 +285,6 @@ export default function MainDashboard() {
             </div>
             <div className={styles.scheduleActions}>
               <button className={styles.editButton} onClick={() => openEditModal(activeSchedule)}>Edit</button>
-              <button className={styles.deleteButton} onClick={() => openDeleteModal(activeSchedule)}>Delete</button>
               <button className={styles.actionButton} onClick={() => handleGoToLayout(activeSchedule.schedule_id)}>Go to Layout</button>
             </div>
           </div>
@@ -304,26 +342,19 @@ export default function MainDashboard() {
             <h2 className={styles.modalHeading}>CREATE CLASS SCHEDULE</h2>
 
             <div className={styles.elements}>
-              <label className={styles.labelText}>Class Schedule Name</label>
-              <input
-                type="text"
-                placeholder="Schedule 1"
-                className={styles.modalInput}
-                value={scheduleName}
-                onChange={(e) => setScheduleName(e.target.value)}
-              />
+              <label className={styles.labelText}>Class Schedule Name*</label>
+              <input type="text" placeholder="Schedule 1" className={styles.modalInput} value={scheduleName} onChange={(e) => setScheduleName(e.target.value)}/>
             </div>
 
             <div className={styles.modalButtons}>
-              <button
-                className={styles.primaryButton}
-                onClick={handleCreateSchedule}
-              >
+              <button className={styles.primaryButton} onClick={handleCreateSchedule}>
                 Create Class Schedule
               </button>
-              <button
-                className={styles.closeBtn}
-                onClick={() => setShowModalCreateSched(false)}
+              <button className={styles.closeBtn}
+                onClick={() => {
+                  setShowModalCreateSched(false);
+                  setScheduleName("");
+                }}
               >
                 Cancel
               </button>
@@ -338,13 +369,8 @@ export default function MainDashboard() {
           <div className={styles.modalBox}>
             <h2 className={styles.modalHeading}>EDIT CLASS SCHEDULE</h2>
             <div className={styles.elements}>
-              <label className={styles.labelText}>Class Schedule Name</label>
-              <input
-                type="text"
-                className={styles.modalInput}
-                value={editScheduleName}
-                onChange={(e) => setEditScheduleName(e.target.value)}
-              />
+              <label className={styles.labelText}>Class Schedule Name*</label>
+              <input type="text" className={styles.modalInput} value={editScheduleName} onChange={(e) => setEditScheduleName(e.target.value)}/>
             </div>
             <div className={styles.modalButtons}>
               <button className={styles.primaryButton} onClick={handleEditSchedule}>Save Changes</button>
