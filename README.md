@@ -1,59 +1,16 @@
-# IsSked
+# React + Vite
 
-A web-based class schedule maker that prompts the user to manually input their courses in a semester, which will be displayed as a table. It also integrates a task/assignment list for each course.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Project Repository Structure
+Currently, two official plugins are available:
 
-This README provides an overview of the repository layout to help contributors navigate quickly.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### Directory Tree
-- **is-sked/**
-  - **.vercel/** - Linking directory to Vercel
-  - **dist/** - Root file for Vercel
-  - **node_modules/** - npm dependencies
-  - **public/** - Static assets served by Vite
-  - **src/**
-    - **assets/** - Images, icons, illustrations
-    - **components/** - Reusable React components
-      - **NavigationBar.jsx** - Navigation bar component
-    - **css/** - CSS modules & global styles
-    - **lib/** - Supabase client & utility functions
-    - **pages/** - Application pages/routes
-      - **AccountProfile.jsx** - Page for profile module
-      - **AuthCallback.jsx** - Page for email confirmation
-      - **ClassSchedule.jsx** - Page for course module
-      - **LoginPage.jsx** - Root page for login to website
-      - **MainDashboard.jsx** - Page after logging in and for class schedule module
-      - **Notifications.jsx (WIP)** - Page for notification module
-      - **ResetPassword.jsx (WIP)** - Page for reset password
-      - **SetProfile.jsx** - Page for profile set up after email confirmation
-      - **TaskDashboard.jsx** - Page for task module
-    - **App.jsx** - Page router
-    - **index.css** - Global CSS
-    - **main.jsx** - Root file
+## React Compiler
 
-## Installation
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-**Step 0:** Make sure you have [Node.js](https://nodejs.org/) installed.
+## Expanding the ESLint configuration
 
-**Step 1:** Go to is-sked/ folder.
-
-**Step 2:** Install dependencies:
-```bash
-npm install
-```
-
-**Step 3:** Start the development server:
-```bash
-npm run dev
-```
-
-**Step 4:** After running, open your browser and go to:
-```bash
-http://localhost:5173/
-```
-
-## Technologies
-- React
-- Vite
-- Supabase
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
