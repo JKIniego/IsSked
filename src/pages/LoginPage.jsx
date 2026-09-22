@@ -231,13 +231,18 @@ export default function LoginPage() {
         localStorage.setItem("display_name", signupUsername);
         localStorage.setItem("degree_program_id", "");
 
+        const accessToken = session.access_token;
+        if (accessToken) {
+          localStorage.setItem("authToken", accessToken);
+        }
+
         setShowModalCreateAccount(false);
-        navigate("/main_dashboard", { replace: true });
+        navigate("/set_profile", { replace: true });
         return;
       }
 
       // Fallback if registration is still waiting on confirmation
-      alert("Account created! Please sign in when your registration is ready.");
+      alert("Account created! Please complete your profile setup before continuing.");
       setShowModalCreateAccount(false);
     } catch(err) {
       alert("Signup failed: " + err.message);

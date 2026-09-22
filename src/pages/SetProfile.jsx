@@ -60,11 +60,13 @@ export default function SetProfile() {
       .eq("user_id", user.id);
 
     // Checks for any unexpected error
-    if (error) console.error("Error updating profile:", error);
-    else {
-      localStorage.setItem("degree_program_id", degreeProgram);
-      navigate("/main_dashboard");
+    if (error) {
+      console.error("Error updating profile:", error);
+      return;
     }
+
+    localStorage.setItem("degree_program_id", degreeProgram);
+    navigate("/main_dashboard", { replace: true });
   }
 
   return (
