@@ -648,7 +648,7 @@ export default function ClassSchedule() {
             <button className={styles.actionButton} onClick={downloadSchedulePNG}>
               Download Schedule as PNG
             </button>
-            <button className={styles.actionButton}>Go To Calendar</button>
+            <button className={styles.actionButton} onClick={() => alert("Calendar view is still WIP")}>Go To Calendar</button>
             <button className={`${styles.actionButton} ${styles.backButton}`} onClick={() => navigate("/main_dashboard")}>Back to Main Dashboard</button>
           </div>
         </div>
