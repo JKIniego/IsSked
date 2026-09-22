@@ -17,41 +17,47 @@ export default function AuthCallback() {
         return;
       }
 
-      // Fetches user profile data
-      const { data: profile, error } = await supabase
+      let { data: profile, error } = await supabase
         .from("student")
         .select("*")
         .eq("user_id", session.user.id)
-        .single();
+        .maybeSingle();
 
-      // Checks if user account is newly created: for profile setup purposes
-      if(!profile) {
-        const accessToken = authData.session?.access_token;
-        if(accessToken) {
-          localStorage.setItem("authToken", accessToken);
-        }
-
-        navigate("/set_profile");
-      } else if(!profile.degree_program_id) {
-        const accessToken = authData.session?.access_token;
-        if(accessToken) {
-          localStorage.setItem("authToken", accessToken);
-        }
-        
-        navigate("/set_profile");
-      } else {
-        localStorage.setItem("student_id", profile.student_id);
-        localStorage.setItem("email", session.user.email);
-        localStorage.setItem("display_name", profile.display_name ?? "");
-        localStorage.setItem("degree_program_id", profile.degree_program_id);
-
-        const accessToken = authData.session?.access_token;
-        if(accessToken) {
-          localStorage.setItem("authToken", accessToken);
-        }
-
-        navigate("/main_dashboard");
+      if (error && error.code !== "PGRST116") {
+        console.error("Error loading student profile:", error.message);
       }
+
+      if (!profile) {
+        const newProfile = {
+          user_id: session.user.id,
+          student_id: session.user.user_metadata?.student_id ?? "",
+          display_name: session.user.user_metadata?.display_name ?? session.user.email ?? "",
+          degree_program_id: null,
+        };
+
+        const { data: createdProfile, error: insertError } = await supabase
+          .from("student")
+          .insert([newProfile])
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error("Failed to create student profile:", insertError.message);
+        }
+
+        profile = createdProfile;
+      }
+
+      const studentId = profile?.student_id ?? session.user.user_metadata?.student_id ?? "";
+      const displayName = profile?.display_name ?? session.user.user_metadata?.display_name ?? session.user.email ?? "";
+      const degreeProgramId = profile?.degree_program_id ?? "";
+
+      localStorage.setItem("student_id", studentId);
+      localStorage.setItem("email", session.user.email);
+      localStorage.setItem("display_name", displayName);
+      localStorage.setItem("degree_program_id", degreeProgramId ?? "");
+
+      navigate("/main_dashboard", { replace: true });
     }
 
     handleCallback();

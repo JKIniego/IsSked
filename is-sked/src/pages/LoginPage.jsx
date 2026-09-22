@@ -194,13 +194,50 @@ export default function LoginPage() {
         return;
       }
 
-      if(!data.user) {
+      const user = data?.user;
+      if(!user) {
         alert("Email or Student ID already exists!");
         return;
       }
 
-      // Alerts when new account is successfully created
-      alert("Account created! Check your email for verification. If you already signed up, check your inbox.");
+      const studentRecord = {
+        user_id: user.id,
+        student_id: signupStudentID,
+        display_name: signupUsername,
+        degree_program_id: null,
+      };
+
+      const { data: existingStudent, error: existingStudentError } = await supabase
+        .from("student")
+        .select("student_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (!existingStudent && !existingStudentError) {
+        const { error: insertError } = await supabase.from("student").insert([studentRecord]);
+        if (insertError) {
+          console.error("Failed to create student record during signup:", insertError.message);
+        }
+      }
+
+      const session = data.session ?? (await supabase.auth.signInWithPassword({
+        email: signupEmail,
+        password: signupPassword,
+      })).data.session;
+
+      if (session) {
+        localStorage.setItem("student_id", signupStudentID);
+        localStorage.setItem("email", user.email);
+        localStorage.setItem("display_name", signupUsername);
+        localStorage.setItem("degree_program_id", "");
+
+        setShowModalCreateAccount(false);
+        navigate("/main_dashboard", { replace: true });
+        return;
+      }
+
+      // Fallback if registration is still waiting on confirmation
+      alert("Account created! Please sign in when your registration is ready.");
       setShowModalCreateAccount(false);
     } catch(err) {
       alert("Signup failed: " + err.message);
