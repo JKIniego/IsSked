@@ -24,16 +24,19 @@ export default function AuthCallback() {
         .eq("user_id", session.user.id)
         .single();
 
-      // Checks if user account is newly created: for profile setup purposes
+      // Checks if user account is newly created: send them straight to the dashboard
       if (!profile) {
-        navigate("/set_profile");
-      } else if (!profile.degree_program_id) {
-        navigate("/set_profile");
+        localStorage.setItem("student_id", session.user.user_metadata?.student_id ?? "");
+        localStorage.setItem("email", session.user.email);
+        localStorage.setItem("display_name", session.user.user_metadata?.display_name ?? "");
+        localStorage.setItem("degree_program_id", "");
+
+        navigate("/main_dashboard");
       } else {
         localStorage.setItem("student_id", profile.student_id);
         localStorage.setItem("email", session.user.email);
         localStorage.setItem("display_name", profile.display_name ?? "");
-        localStorage.setItem("degree_program_id", profile.degree_program_id);
+        localStorage.setItem("degree_program_id", profile.degree_program_id ?? "");
 
         navigate("/main_dashboard");
       }

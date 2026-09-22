@@ -142,9 +142,45 @@ export default function LoginPage() {
       return;
     }
 
-    const user = data.user;
+    const user = data?.user ?? null;
     if (!user) {
       alert("Unexpected signup issue");
+      return;
+    }
+
+    let activeSession = data.session;
+    if (!activeSession) {
+      const { data: signedInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: signupEmail,
+        password: signupPassword,
+      });
+
+      if (signInError) {
+        console.error("Auto-login after signup failed:", signInError.message);
+        alert("Account created! Please check your email to confirm it before signing in.");
+        setShowModalCreateAccount(false);
+        return;
+      }
+
+      activeSession = signedInData.session;
+    }
+
+    if (activeSession) {
+      const { data: studentProfile, error: profileError } = await supabase
+        .from("student")
+        .select("student_id, display_name, degree_program_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (!profileError && studentProfile) {
+        localStorage.setItem("student_id", studentProfile.student_id);
+        localStorage.setItem("email", user.email);
+        localStorage.setItem("display_name", studentProfile.display_name ?? "");
+        localStorage.setItem("degree_program_id", studentProfile.degree_program_id ?? "");
+      }
+
+      setShowModalCreateAccount(false);
+      navigate("/main_dashboard", { replace: true });
       return;
     }
 
