@@ -1,23 +1,46 @@
+:root {
+    --maroon: #7B1113;
+    --maroon-dark: #5c0c0e;
+    --green: #014421;
+    --green-dark: #012f16;
+    --green-light: #03803f;
+    --bg-page: #f4f3f1;
+    --bg-card: #ffffff;
+    --ink: #1c1c1c;
+    --ink-soft: #6b7280;
+    --border: #e6e4e1;
+    --shadow-sm: 0 1px 2px rgba(15,15,15,0.06), 0 1px 1px rgba(15,15,15,0.04);
+    --shadow-md: 0 6px 18px rgba(15,15,15,0.08);
+    --shadow-lg: 0 20px 45px rgba(15,15,15,0.18);
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --ease: 180ms cubic-bezier(.4,0,.2,1);
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 .mainBody {
-    background-color: rgb(243, 243, 243);
+    background-color: var(--bg-page);
+    font-family: var(--font);
+    color: var(--ink);
 }
 
 .wholeContent {
     display: flex;
     flex-direction: column;
     flex: 1;
-    margin: 70px 15px 20px 15px;
-    padding: 7px 16px 7px 16px;
-    border-radius: 20px;
-    background-color: white;
+    margin: 72px 20px 20px 20px;
+    padding: 8px 20px 24px 20px;
+    border-radius: var(--radius-lg);
+    background-color: var(--bg-card);
     box-sizing: border-box;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
     height: calc(100vh - 70px - 20px);
     overflow-y: auto;
 }
 
 .elements {
-    padding: 20px;
+    padding: 16px 4px;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -44,161 +67,228 @@
 
 .right {
     justify-content: flex-end;
+    align-items: center;
 }
 
 .addButton {
-    width: 100%;
-    background-color: white;
-    font-weight: bolder;
-    color: black;
-    height: 100%;
-    font-size: 16px;
+    background-color: var(--green);
+    font-weight: 700;
+    color: white;
+    height: 44px;
+    padding: 0 20px;
+    font-size: 15px;
     cursor: pointer;
     border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    transition: background var(--ease), transform var(--ease);
 }
 
 .addButton:hover {
-    background-color: #e6e6e6;
+    background-color: var(--green-light);
 }
 
 .addButton:active {
-    background-color: #9c9c9c;
+    background-color: var(--green-dark);
+    transform: scale(0.98);
 }
 
 .block {
     display: block;
-    font-weight: lighter;
-    font-size: 20px;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-top: 4px;
 }
 
 .taskList {
-    border-radius: 20px;
-    background-color: white;
+    border-radius: var(--radius-lg);
+    background-color: var(--bg-card);
     box-sizing: border-box;
-    padding: 16px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: calc(100vh - 70px);
-    overflow-y: auto;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-height: 0;
+}
+
+.emptyState {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    color: var(--ink-soft);
+    padding: 40px 20px;
+}
+
+.emptyTitle {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+.emptySubtitle {
+    font-size: 15px;
+    color: var(--ink-soft);
 }
 
 .taskBox {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px;
-    margin-bottom: 15px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 18px 20px;
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    border-left: 4px solid #b3b3b3;
+    transition: box-shadow var(--ease), transform var(--ease);
+}
+
+.taskBox:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
 }
 
 .taskInfo {
     display: flex;
     flex-direction: column;
+    gap: 2px;
 }
 
 .taskTitle {
-    font-size: 26px;
-    font-weight: bold;
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--ink);
 }
 
 .dateText {
-    font-size: 14px;
-    opacity: 0.7;
-    margin-top: 4px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 2px;
 }
 
 .taskActions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    align-items: center;
 }
 
 .editButton, .deleteButton {
-    padding: 6px 12px;
-    border-radius: 7px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
     border: none;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 13px;
+    font-weight: 700;
     color: white;
+    transition: background var(--ease), transform var(--ease);
 }
 
 .editButton {
-    background-color: #014421;
+    background-color: #565656;
 }
 
 .editButton:hover {
-    background-color: #03803f;
+    background-color: #3d3d3d;
 }
 
 .deleteButton {
-    background-color: #7B1113;
+    background-color: var(--maroon);
 }
 
 .deleteButton:hover {
-    background-color: #c71c1f;
+    background-color: var(--maroon-dark);
+}
+
+.editButton:active, .deleteButton:active {
+    transform: scale(0.96);
 }
 
 .dropdownBox {
-    padding: 6px 12px;
-    border-radius: 7px;
-    border: 2px solid black;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 13px;
+    font-weight: 700;
     width: 150px;
+    font-family: var(--font);
+    color: var(--ink);
 }
 
 .inProgress {
-    background-color: #ffe680;
+    background-color: #fff2cc;
+    border-color: #e6b800;
 }
 
 .completed {
-    background-color: #9aff9a;
+    background-color: #dcf5df;
+    border-color: var(--green);
 }
 
 .cancelled {
-    background-color: #838383;
+    background-color: #ececec;
+    border-color: #9c9c9c;
 }
 
 .cancelledBox {
-    background-color: #b8b8b8;
-    border-left: 5px solid #838383;
+    background-color: #f7f7f6;
+    border-left: 4px solid #9c9c9c;
+    opacity: 0.85;
 }
 
 .completeBox {
-    background-color: #ecffe6;
-    border-left: 5px solid green;
+    background-color: #f4fbf5;
+    border-left: 4px solid var(--green);
 }
 
 .buttonContainer {
-    height: 120px;
+    height: 90px;
     align-items: center;
 }
 
 .backButton {
-    width: 100%;
-    font-weight: bolder;
-    height: 100%;
-    font-size: 16px;
+    font-weight: 700;
+    font-size: 15px;
     cursor: pointer;
     border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    height: 100%;
-    background-color: #7B1113;
+    border-radius: var(--radius-sm);
+    background-color: var(--maroon);
     color: white;
     width: 65%;
+    height: 48px;
+    transition: background var(--ease), transform var(--ease);
 }
 
 .backButton:hover {
-    background-color: #c71c1f;
+    background-color: var(--maroon-dark);
 }
 
 .backButton:active {
-    background-color: #3b0909;
+    transform: scale(0.98);
+}
+
+.modalHeading {
+    font-size: 22px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: var(--maroon);
+    margin: 0;
+}
+
+.labelText {
+    margin-bottom: 6px;
+    align-self: flex-start;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .modalBackdrop {
@@ -207,87 +297,114 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.5);
+    background: rgba(20, 10, 10, 0.5);
+    backdrop-filter: blur(3px);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 10px;
+    z-index: 1100;
+    animation: fadeIn 150ms ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .modalBox {
     background: white;
-    padding: 25px;
-    border-radius: 20px;
-    width: 50%;
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    width: min(500px, 90vw);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 10px;
-    z-index: 1005;
+    gap: 6px;
+    box-shadow: var(--shadow-lg);
+    animation: popIn 180ms cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modalInput {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 2px solid black;
-    font-size: 16px;
+    padding: 12px 14px;
+    margin: 6px 0 4px 0;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
     box-sizing: border-box;
+    font-family: var(--font);
+    background-color: #f7f6f4;
+    transition: border-color var(--ease), box-shadow var(--ease), background var(--ease);
+}
+
+.modalInput:focus {
+    outline: none;
+    border-color: var(--green);
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(1, 68, 33, 0.12);
 }
 
 .modalButtons {
     display: flex;
     justify-content: space-around;
-    margin-top: 15px;
-    gap: 5px;
-    width: 70%;
-    height: 50px;
+    margin-top: 12px;
+    gap: 10px;
+    width: 78%;
+    height: 46px;
 }
 
 .primaryButton {
     width: 100%;
-    background-color: #014421;
-    font-weight: bolder;
+    background-color: var(--green);
+    font-weight: 700;
     color: white;
     height: 100%;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
     border: none;
+    border-radius: var(--radius-sm);
+    transition: background var(--ease), transform var(--ease);
 }
 
 .primaryButton:hover {
-    background-color: #03803f;
+    background-color: var(--green-light);
 }
 
 .primaryButton:active {
-    background-color: #012412;
+    background-color: var(--green-dark);
+    transform: scale(0.98);
 }
 
 .closeBtn {
     width: 100%;
-    background-color: #7B1113;
-    font-weight: bolder;
-    color: white;
+    background-color: transparent;
+    font-weight: 700;
+    color: var(--maroon);
     height: 100%;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
-    border: none;
+    border: 1.5px solid var(--maroon);
+    border-radius: var(--radius-sm);
+    transition: background var(--ease), color var(--ease);
 }
 
 .closeBtn:hover {
-    background-color: #c71c1f;
-}
-
-.closeBtn:active {
-    background-color: #3b0909;
+    background-color: var(--maroon);
+    color: white;
 }
 
 .titleDate {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 14px;
 }
 
 .titleDiv {
@@ -299,6 +416,6 @@
 }
 
 .overdueBox {
-    border-left: 5px solid red;
-    background-color: #ffe6e6;
+    border-left: 4px solid var(--maroon);
+    background-color: #fdf0ef;
 }

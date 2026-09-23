@@ -1,3 +1,18 @@
+:root {
+    --maroon: #7B1113;
+    --green: #014421;
+    --green-dark: #012f16;
+    --green-light: #03803f;
+    --ink: #1c1c1c;
+    --ink-soft: #6b7280;
+    --border: #e6e4e1;
+    --shadow-lg: 0 25px 60px rgba(0,0,0,0.30);
+    --radius-sm: 8px;
+    --radius-lg: 24px;
+    --ease: 180ms cubic-bezier(.4,0,.2,1);
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 .profileBody {
     margin: 0;
     min-width: 320px;
@@ -5,60 +20,98 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: linear-gradient(to bottom, #7B1113, #014421);
+    background-image: radial-gradient(circle at 15% 15%, rgba(255,255,255,0.08), transparent 40%),
+        linear-gradient(135deg, var(--maroon) 0%, var(--green) 100%);
+    font-family: var(--font);
+    color: var(--ink);
 }
 
 .profileContainer {
     background-color: white;
-    border-radius: 20px;
-    width: 65%;
-    height: 80%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    border-radius: var(--radius-lg);
+    width: min(420px, 90vw);
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    padding: 48px 0 36px 0;
+    box-shadow: var(--shadow-lg);
 }
 
 .heading {
-    font-size: 50px;
-    letter-spacing: 6px;
+    font-size: 30px;
+    letter-spacing: 5px;
+    font-weight: 800;
+    color: var(--maroon);
+    margin: 0 0 6px 0;
+    text-align: center;
+}
+
+.subheading {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 18px 0;
+    text-align: center;
+    width: 78%;
 }
 
 .elements {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 78%;
 }
 
 .labelText {
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     align-self: flex-start;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .inputField {
     width: 100%;
-    border: 2px solid black;
-    padding: 10px;
-    font-size: 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 15px;
     outline: none;
-    background-color: var(--secondary, #f0f0f0);
+    background-color: #f7f6f4;
     box-sizing: border-box;
+    font-family: var(--font);
+    transition: border-color var(--ease), box-shadow var(--ease), background var(--ease);
+}
+
+.inputField:focus {
+    border-color: var(--green);
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(1, 68, 33, 0.12);
 }
 
 .primaryButton {
     width: 100%;
-    background-color: #014421;
-    font-weight: bolder;
+    background-color: var(--green);
+    font-weight: 700;
     color: white;
-    height: 100%;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
     border: none;
-    height: 60px;
+    border-radius: var(--radius-sm);
+    height: 52px;
+    letter-spacing: 0.5px;
+    transition: background var(--ease), transform var(--ease);
+}
+
+.primaryButton:hover {
+    background-color: var(--green-light);
+}
+
+.primaryButton:active {
+    background-color: var(--green-dark);
+    transform: scale(0.98);
 }
